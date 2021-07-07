@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LicencePlate index{% endblock %}
+
+{% block body %}
+    <h1>LicencePlate index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>PlateNumber</th>
+                <th>UserIds</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for licence_plate in licence_plates %}
+            <tr>
+                <td>{{ licence_plate.id }}</td>
+                <td>{{ licence_plate.plateNumber }}</td>
+                <td>{{ licence_plate.userIds }}</td>
+                <td>
+                    <a href="{{ path('licence_plate_show', {'id': licence_plate.id}) }}">show</a>
+                    <a href="{{ path('licence_plate_edit', {'id': licence_plate.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('licence_plate_new') }}">Create new</a>
+{% endblock %}

@@ -47,4 +47,15 @@ class LicencePlateRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findAllByUser($value) {
+        return $this->createQueryBuilder('l')
+            ->andWhere('l.userIds = :val')
+            ->setParameter('val', $value)
+            ->orderBy('l.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }
