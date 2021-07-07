@@ -5,65 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8efc4229-4bf7-4417-936e-a68393fad2dc" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/config/packages/security.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/packages/sensio_framework_extra.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/packages/test/validator.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/packages/twig.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/packages/validator.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations/Version20210702064053.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations/Version20210702090337.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations/Version20210705084801.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Acme/BlogBundle/Resources/config/doctrine/metadata/orm/Activity.orm.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Acme/BlogBundle/Resources/config/doctrine/metadata/orm/DoctrineMigrationVersions.orm.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Acme/BlogBundle/Resources/config/doctrine/metadata/orm/LicencePlate.orm.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Acme/BlogBundle/Resources/config/doctrine/metadata/orm/SecureUser.orm.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Acme/BlogBundle/Resources/config/doctrine/metadata/orm/User.orm.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Controller/LicencePlateController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Controller/UserSecurityController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Entity/Activity.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Entity/SecureUser.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Form/ActivityType.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Form/LicencePlateType.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Form/UserRegisterFormType.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Repository/ActivityRepository.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Repository/SecureUserRepository.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Security/UserAuthenticator.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Service/ActivitiesService.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Service/LicencePlateService.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Service/MailerService.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/activity/_form.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/activity/_i_blocked_form.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/activity/i_blocked.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/activity/new.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/licence_plate/_delete_form.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/licence_plate/_form.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/licence_plate/edit.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/licence_plate/index.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/licence_plate/new.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/licence_plate/show.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/main_page.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/security/login.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/users/register.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/users/users_index.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Netrom-WhoBlockedMe.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Netrom-WhoBlockedMe.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/ff70fcbd-b4f1-40d2-a1bd-abbc15f3634c.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/ff70fcbd-b4f1-40d2-a1bd-abbc15f3634c/storage_v2/_src_/schema/mysql.osA4Bg.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/ff70fcbd-b4f1-40d2-a1bd-abbc15f3634c/storage_v2/_src_/schema/performance_schema.kIw0nw.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Form/ActivityBlockeeType.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/bundles.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/bundles.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/routes.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/MainController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/MainController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/LicencePlate.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/LicencePlate.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/ActivityType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/ActivityType.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Repository/LicencePlateRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/LicencePlateRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/symfony.lock" beforeDir="false" afterPath="$PROJECT_DIR$/symfony.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/LicencePlateService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/LicencePlateService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/activity/_i_blocked_form.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/activity/i_blocked.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/main_page.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/main_page.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -213,7 +163,7 @@
       <workItem from="1625207577446" duration="11071000" />
       <workItem from="1625414154910" duration="6742000" />
       <workItem from="1625466768523" duration="6470000" />
-      <workItem from="1625584585506" duration="14617000" />
+      <workItem from="1625584585506" duration="22042000" />
     </task>
     <servers />
   </component>

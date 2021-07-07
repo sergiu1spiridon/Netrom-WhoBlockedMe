@@ -58,4 +58,15 @@ class LicencePlateRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+
+    public function findAllByLicencePlate($value) {
+        return $this->createQueryBuilder('l')
+            ->andWhere('l.plateNumber = :val')
+            ->setParameter('val', $value)
+            ->orderBy('l.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }
