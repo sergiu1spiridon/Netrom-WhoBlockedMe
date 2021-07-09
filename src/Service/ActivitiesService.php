@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Services;
+namespace App\Service;
 
 use App\Entity\Activity;
 use App\Repository\ActivityRepository;
@@ -26,9 +26,9 @@ class ActivitiesService
 
     public function iveBlockedSomebody(string $licensePlate)
     {
-        $blocker = $this->activityRepo->findByBlocker($licensePlate);
+        $blocker = $this->activityRepo->findOneByBlocker($licensePlate);
 
-        if ($blocker instanceof Activity){
+        if ($blocker != null){
             return $blocker->getBlockee();
         }
         return '';
@@ -36,17 +36,17 @@ class ActivitiesService
 
     /**
      * @param string $licensePlate
-     * @return string|null
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function whoBlockedMe(string $licensePlate): ?string
     {
-        $blocker = $this->activityRepo->findByBlockee($licensePlate);
+        $blocker = $this->activityRepo->findOneByBlockee($licensePlate);
 
-        if ($blocker instanceof Activity){
+        if ($blocker != null){
             return $blocker->getBlocker();
         }
         return '';
+//        return $this->activityRepo->findByBlockee($licensePlate);
     }
 
 

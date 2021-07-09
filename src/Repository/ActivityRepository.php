@@ -23,7 +23,7 @@ class ActivityRepository extends ServiceEntityRepository
      * @return Activity|null Returns an Activity object
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findByBlocker($value): ?Activity
+    public function findOneByBlocker($value): ?Activity
     {
         return $this->createQueryBuilder('a')
             ->andWhere('a.blocked = :val')
@@ -37,7 +37,7 @@ class ActivityRepository extends ServiceEntityRepository
      * @return Activity|null Returns an Activity object
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findByBlockee($value): ?Activity
+    public function findOneByBlockee($value): ?Activity
     {
         return $this->createQueryBuilder('a')
             ->andWhere('a.blockee = :val')

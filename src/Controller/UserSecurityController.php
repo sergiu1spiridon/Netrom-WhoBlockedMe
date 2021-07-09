@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserRegisterFormType;
 use App\Repository\UserRepository;
+use App\Service\MailerService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -24,7 +25,7 @@ class UserSecurityController extends AbstractController
     }
 
     #[Route('/register', name: 'app_register', methods: ['GET', 'POST'])]
-    public function register(Request $request, UserPasswordHasherInterface $passwordEncoder):Response {
+    public function register(Request $request, UserPasswordHasherInterface $passwordEncoder, MailerService $mailerService):Response {
         $user = new User();
 
         $form = $this->createForm(UserRegisterFormType::class, $user);
@@ -32,6 +33,7 @@ class UserSecurityController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            $plainPassword = $user->getPassword();
             $password = $passwordEncoder->hashPassword($user, $user->getPassword());
             $user->setPassword($password);
 //            $user->setPassword(
@@ -45,6 +47,7 @@ class UserSecurityController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
+            $mailerService->sendRegistrationEmail($user->getEmailAddress(), $plainPassword);
             return $this->redirectToRoute('app_login');
         }
 

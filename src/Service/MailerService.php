@@ -1,8 +1,11 @@
 <?php
 
 
-namespace App\Services;
+namespace App\Service;
 
+
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 class MailerService
 {
@@ -12,11 +15,26 @@ class MailerService
     /**
      * @param MailerInterface $mailer
      */
-    public function __construct(EntityManagerInterface $mailer)
+    public function __construct(MailerInterface $mailer)
     {
-        $this->em = $mailer;
+        $this->mailer = $mailer;
     }
 
     // TO DO
+
+    public function sendRegistrationEmail($userMail, $password) {
+        $email = (new Email())
+            ->from('hello@example.com')
+            ->to($userMail)
+            //->cc('cc@example.com')
+            //->bcc('bcc@example.com')
+            //->replyTo('fabien@example.com')
+            //->priority(Email::PRIORITY_HIGH)
+            ->subject('Time for Symfony Mailer!')
+            ->text('Sending emails is fun again! ' . $password)
+            ->html('<p>See Twig integration for better HTML integration!</p>');
+
+        $this->mailer->send($email);
+    }
 
 }

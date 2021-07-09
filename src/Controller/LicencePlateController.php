@@ -6,6 +6,9 @@ use App\Entity\LicencePlate;
 use App\Entity\User;
 use App\Form\LicencePlateType;
 use App\Repository\LicencePlateRepository;
+use App\Service\ActivitiesService;
+use App\Service\MailerService;
+use App\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,7 +34,7 @@ class LicencePlateController extends AbstractController
     }
 
     #[Route('/new', name: 'licence_plate_new', methods: ['GET', 'POST'])]
-    public function new(Request $request): Response
+    public function new(Request $request, ActivitiesService $activitiesService, MailerService $mailerService, UserService $userService): Response
     {
         $licencePlate = new LicencePlate();
         $form = $this->createForm(LicencePlateType::class, $licencePlate);
@@ -45,7 +48,13 @@ class LicencePlateController extends AbstractController
             $entityManager->persist($licencePlate);
             $entityManager->flush();
 
-            return $this->redirectToRoute('licence_plate_index');
+            $blockedByMyCar = $activitiesService->iveBlockedSomebody($licencePlate->getPlateNumber());
+            if ($blockedByMyCar != null) {
+                $mailerService->sendRegistrationEmail($userService->getCurrentUserMail(), $blockedByMyCar);
+                $this->addFlash("warning", $blockedByMyCar);
+            }
+
+            return $this->redirectToRoute('licence_plates_of_user');
         }
 
         return $this->render('licence_plate/new.html.twig', [
