@@ -26,7 +26,7 @@ class ActivityRepository extends ServiceEntityRepository
     public function findOneByBlocker($value): ?Activity
     {
         return $this->createQueryBuilder('a')
-            ->andWhere('a.blocked = :val')
+            ->andWhere('a.blocker = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()

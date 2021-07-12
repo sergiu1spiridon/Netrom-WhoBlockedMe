@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\ChangePassword;
 use App\Entity\User;
+use App\Form\NewPasswordType;
 use App\Form\UserRegisterFormType;
 use App\Repository\UserRepository;
 use App\Service\MailerService;
@@ -55,6 +57,39 @@ class UserSecurityController extends AbstractController
             'user' => $user,
             'form' => $form->createView(),
         ]);
+    }
+
+    #[Route('/ch_pass', name: 'app_change_password', methods: ['GET', 'POST'])]
+    public function changePassword(Request $request, UserPasswordHasherInterface $passwordEncoder, MailerService $mailerService):Response
+    {
+        $changePass = new ChangePassword();
+        $user = $this->getUser();
+
+        $form = $this->createForm(NewPasswordType::class, $changePass);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $plainPassword = $changePass->getNewPassword();
+            $password = $passwordEncoder->hashPassword($user, $plainPassword);
+            $user->setPassword($password);
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $user = $entityManager->getRepository(User::class)->find($this->getUser()->getUserIdentifier());
+
+            $user->setPassword($password);
+            $entityManager->flush();
+
+            $mailerService->sendRegistrationEmail($user->getEmailAddress(), $plainPassword);
+            return $this->redirectToRoute('app_login');
+        }
+
+        return $this->render('users/register.html.twig', [
+            'user' => $user,
+            'form' => $form->createView(),
+        ]);
+
     }
 
     /**

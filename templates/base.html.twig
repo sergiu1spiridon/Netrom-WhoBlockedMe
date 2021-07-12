@@ -16,11 +16,15 @@
         {% endblock %}
     </head>
     <body>
+    {% include('navbar.html.twig') %} <!-- this generates the error -->
+
+    <div class='content'>
+
+    </div>
         {% block body %}{% endblock %}
 
         {% for label, messages in app.flashes %}
             {% for message in messages %}
-                Or even with css class rendering:
                 <div class="alert alert-{{ label }}">{{message}}</div>
 
             {% endfor %}

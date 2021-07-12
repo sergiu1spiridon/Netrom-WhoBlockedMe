@@ -43,15 +43,23 @@ class LicencePlateController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $licencePlate->setUserIds($this->getUser()->getUserIdentifier());
+            $initialLicencePlate = $licencePlate->getPlateNumber();
+
+            $finalLicencePlate = preg_replace('/[^0-9a-zA-Z]/', '', $initialLicencePlate);
+
+            $licencePlate->setPlateNumber(strtoupper($finalLicencePlate));
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($licencePlate);
             $entityManager->flush();
 
-            $blockedByMyCar = $activitiesService->iveBlockedSomebody($licencePlate->getPlateNumber());
-            if ($blockedByMyCar != null) {
-                $mailerService->sendRegistrationEmail($userService->getCurrentUserMail(), $blockedByMyCar);
-                $this->addFlash("warning", $blockedByMyCar);
+            $this->addFlash('success', "added car " . $licencePlate->getPlateNumber());
+            $activityByBlocker = $activitiesService->findActionByBlocker($licencePlate->getPlateNumber());
+
+            if ($activityByBlocker != null) {
+                $mailerService->sendRegistrationEmail($userService->getCurrentUserMail(), $activityByBlocker->getBlockee());
+                $activityByBlocker->setStatus(1);
+                $this->addFlash("warning", $licencePlate->getPlateNumber());
             }
 
             return $this->redirectToRoute('licence_plates_of_user');
@@ -80,7 +88,7 @@ class LicencePlateController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('licence_plate_index');
+            return $this->redirectToRoute('licence_plates_of_user');
         }
 
         return $this->render('licence_plate/edit.html.twig', [
@@ -96,8 +104,10 @@ class LicencePlateController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($licencePlate);
             $entityManager->flush();
+
+            $this->addFlash('success', "deleted car " . $licencePlate->getPlateNumber());
         }
 
-        return $this->redirectToRoute('licence_plate_index');
+        return $this->redirectToRoute('licence_plates_of_user');
     }
 }

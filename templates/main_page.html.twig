@@ -3,15 +3,33 @@
 {% block title %} Main Page {% endblock %}
 
 {% block body %}
-    <h1>Main Page</h1>
+    <div class="container">
+        <a class="btn btn-primary btn-lg btn-block" href={{ path('i_was_blocked') }}>someone blocked me</a>
+        <br><br>
+        <a class="btn btn-primary brn-lg btn-block" href={{ path('i_blocked') }}>i blocked someone</a>
+    </div>
 
-    <a href={{ path('app_logout') }}>logout</a>
-    <br>
-    <a href={{ path('licence_plates_of_user') }}>my cars</a>
-    <br>
-    <a href={{ path('i_was_blocked') }}>someone blocked me</a>
-    <br>
-    <a href={{ path('i_blocked') }}>i blocked someone</a>
-
+    <table class="table">
+        <thead>
+        <tr>
+            <th> BLOCKEE </th>
+            <th> BLOCKER </th>
+            <th> STATUS </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for activity in blockedCars %}
+            <tr>
+                <td>{{ activity.blockee }}</td>
+                <td>{{ activity.blocker }}</td>
+                <td>{{ activity.status }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
 

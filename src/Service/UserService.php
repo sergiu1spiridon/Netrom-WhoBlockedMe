@@ -33,5 +33,10 @@ class UserService
         return $this->userRepository->find($this->user->getUserIdentifier())->getEmailAddress();
     }
 
+    public function getMailOfUser($userId):string
+    {
+        return $this->userRepository->find($userId)->getEmailAddress();
+    }
+
 
 }

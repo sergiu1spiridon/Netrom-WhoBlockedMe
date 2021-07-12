@@ -49,5 +49,14 @@ class ActivitiesService
 //        return $this->activityRepo->findByBlockee($licensePlate);
     }
 
+    /**
+     * @param string $licensePlate
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findActionByBlocker(string $licencePlate): ?Activity
+    {
+        return $this->activityRepo->findOneByBlocker($licencePlate);
+    }
+
 
 }

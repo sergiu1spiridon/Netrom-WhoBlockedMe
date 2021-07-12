@@ -1,0 +1,70 @@
+{% set route_name = app.request.attributes.get('_route') %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+
+<!-- navbar -->
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <a class="navbar-brand" href="/"></a>
+    <!-- left side -->
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+        <a {% if route_name == 'main' %} class="nav-link" {% else%} class="nav-link active" {% endif %}
+                href="{{ path('main') }}">HOME</a>
+        </li>
+        <li>
+        <a {% if route_name == 'licence_plates_of_user' %} class="nav-link" {% else%} class="nav-link active" {% endif %}
+                                                          href="{{ path('licence_plates_of_user') }}">My Cars</a>
+        </li>
+    </ul>
+    <!-- right side -->
+    <ul class="navbar-nav ml-auto">
+        {% if (route_name != "app_login") and (route_name != "app_register") %}
+            <li {% if route_name != "app_logout" %} class="nav-item active" {% else %} class="nav-item" {% endif %} >
+                <a class="nav-link" href="{{ path('app_logout') }}" onclick="return confirm('are u sure?')">Logout</a>
+            </li>
+        {% else %}
+            <li {% if route_name != "app_login" %} class="nav-item active" {% else %} class="nav-item" {% endif %} >
+                <a class="nav-link" href="{{ path('app_login') }} ">Login</a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+
+<!-- .container -->
+<div class="container" style="margin-top:30px;">
+    <!-- <div class="row">
+      <div class="col-sm-4">
+        <h3>Column 1</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
+        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
+      </div>
+      <div class="col-sm-4">
+        <h3>Column 2</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
+        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
+      </div>
+      <div class="col-sm-4">
+        <h3>Column 3</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
+        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
+      </div>
+     </div> -->
+    <!-- /.row -->
+
+    {% block body %}{% endblock %}
+</div> <!-- /.container -->
+{% block javascripts %}{% endblock %}
+</body>
+</html>
