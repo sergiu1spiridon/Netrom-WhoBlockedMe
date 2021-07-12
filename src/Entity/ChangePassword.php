@@ -4,6 +4,7 @@
 namespace App\Entity;
 
 use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ChangePassword
 {
@@ -16,6 +17,12 @@ class ChangePassword
 
     /**
      * @var string
+     * @Assert\Length(
+     *      min = 4,
+     *      max = 50,
+     *      minMessage = "Your first name must be at least {{ limit }} characters long",
+     *      maxMessage = "Your first name cannot be longer than {{ limit }} characters"
+     * )
      */
     private $newPassword;
 

@@ -5,22 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8efc4229-4bf7-4417-936e-a68393fad2dc" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Entity/ChangePassword.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Form/NewPasswordType.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/navbar.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/LicencePlateController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/LicencePlateController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/MainController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/MainController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/UserSecurityController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/UserSecurityController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repository/ActivityRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/ActivityRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Service/ActivitiesService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/ActivitiesService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Service/UserService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/UserService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/ChangePassword.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/ChangePassword.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/NewPasswordType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/NewPasswordType.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/licence_plate/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/licence_plate/_form.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/licence_plate/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/licence_plate/edit.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/main_page.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/main_page.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/security/login.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/security/login.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/navbar.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/navbar.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -181,7 +173,7 @@
       <workItem from="1625584585506" duration="27176000" />
       <workItem from="1625812678943" duration="9435000" />
       <workItem from="1625926052809" duration="12167000" />
-      <workItem from="1626024086292" duration="7110000" />
+      <workItem from="1626024086292" duration="12012000" />
     </task>
     <servers />
   </component>

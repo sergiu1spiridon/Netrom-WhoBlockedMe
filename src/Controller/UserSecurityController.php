@@ -62,6 +62,10 @@ class UserSecurityController extends AbstractController
     #[Route('/ch_pass', name: 'app_change_password', methods: ['GET', 'POST'])]
     public function changePassword(Request $request, UserPasswordHasherInterface $passwordEncoder, MailerService $mailerService):Response
     {
+        if (!($this->getUser())) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $changePass = new ChangePassword();
         $user = $this->getUser();
 
