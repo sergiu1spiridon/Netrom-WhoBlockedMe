@@ -29,8 +29,7 @@ class ActivityRepository extends ServiceEntityRepository
             ->andWhere('a.blocker = :val')
             ->setParameter('val', $value)
             ->getQuery()
-            ->getOneOrNullResult()
-            ;
+            ->getOneOrNullResult();
     }
 
     /**
@@ -43,7 +42,8 @@ class ActivityRepository extends ServiceEntityRepository
             ->andWhere('a.blockee = :val')
             ->setParameter('val', $value)
             ->getQuery()
-            ->getOneOrNullResult()
-            ;
+            ->getOneOrNullResult();
     }
+
 }
+

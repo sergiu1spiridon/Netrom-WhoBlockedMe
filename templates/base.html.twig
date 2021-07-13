@@ -16,16 +16,12 @@
         {% endblock %}
     </head>
     <body>
-    {% include('navbar.html.twig') %} <!-- this generates the error -->
+    {% include('navbar.html.twig') %}
 
     <div class='content'>
 
     </div>
         {% block body %}{% endblock %}
-
-{#        {% if not user %}#}
-{#            {% redirect "" %}#}
-{#        {% endif %}#}
 
         {% for label, messages in app.flashes %}
             {% for message in messages %}

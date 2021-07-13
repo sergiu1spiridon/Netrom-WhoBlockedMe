@@ -23,6 +23,7 @@ class MainController extends AbstractController
     public function index(LicencePlateService $licencePlateService, ActivitiesService $activitiesService): Response
     {
         $carsBlocking = array();
+        $carsBlocked = array();
         if ($this->getUser()) {
             $arrayOfCars = $licencePlateService->findLicencePlatesByUserId();
             if (empty($arrayOfCars)) {
@@ -30,41 +31,22 @@ class MainController extends AbstractController
             } else {
                 foreach ($arrayOfCars as $car) {
                     $actionByBlocker = $activitiesService->findActionByBlocker($car);
+                    $actionByBlockee = $activitiesService->findActionByBlockee($car);
                     $whoBlockedMe = $activitiesService->whoBlockedMe($car);
 
                     if ($actionByBlocker != null) {
                         array_push($carsBlocking, $actionByBlocker);
                     }
 
-//                    if ($whoBlockedMe != null) {
-//
-//                        $usersArrayOfBlockerCar = $licencePlateService->findAllUsersByLicencePlate($whoBlockedMe);
-//
-//                        if (sizeof($usersArrayOfBlockerCar) != 0) {
-//                            $statusOfAction
-//                        }
-//                    }
-                }
-
-//                echo ("<br><br>");
-
-                foreach ($arrayOfCars as $car) {
-                    $whoIBlocked = $activitiesService->iveBlockedSomebody($car);
-
-                    if ($whoIBlocked != null) {
-//                        echo ("you have blocked " . $whoIBlocked . "<br>");
-
-                        $usersArrayOfBlockedCar = $licencePlateService->findAllUsersByLicencePlate($whoIBlocked);
-
-//                        foreach ($usersArrayOfBlockedCar as $user) {
-//                            echo ("user id " . $user . "<br>");
-//                        }
+                    if ($actionByBlockee != null) {
+                        array_push($carsBlocked, $actionByBlockee);
                     }
                 }
             }
 
             return $this->render('main_page.html.twig', [
-                'blockedCars' => $carsBlocking
+                'blockedCars' => $carsBlocking,
+                'blockedCarsTwo' => $carsBlocked
             ]);
         } else {
             return $this->redirectToRoute('app_login');
@@ -83,26 +65,19 @@ class MainController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $activityByBlocker = $activitiesService->findActionByBlocker($activity->getBlocker());
-            if ($activityByBlocker != null) {
+            $initialLicencePlate = $activity->getBlocker();
 
-                $usersOfBlockerCar = $licencePlateService->findAllUsersByLicencePlate($activityByBlocker->getBlocker());
+            $finalLicencePlate = preg_replace('/[^0-9a-zA-Z]/', '', $initialLicencePlate);
 
-                if (sizeof($usersOfBlockerCar) != 0) {
+            $activity->setBlocker(strtoupper($finalLicencePlate));
 
-                    foreach ($usersOfBlockerCar as $userId) {
-                        $mailerService->sendRegistrationEmail($userService->getMailOfUser($userId),
-                            "come get car " . $activityByBlocker->getBlocker());
-                    }
-                    $activity->setStatus(1);
-                } else {
-                    $this->addFlash("warning", "Can't find the user of car " . $activity->getBlocker());
-                    $activity->setStatus(0);
-                }
-
-
+            $activityByKey = $activitiesService->findByComposedId($activity->getBlocker(), $activity->getBlockee());
+            if ($activityByKey != null) {
+                $this->addFlash('notice', "activity already reported");
             } else {
-                $activity->setStatus(0);
+
+                $this->searchForBlocker($licencePlateService, $mailerService, $userService, $activity);
+
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($activity);
                 $entityManager->flush();
@@ -117,7 +92,8 @@ class MainController extends AbstractController
     }
 
     #[Route('/i_blocked_someone', name: 'i_blocked', methods: ['GET', 'POST'])]
-    public function new_blocked(Request $request, LicencePlateService $licencePlateService):Response
+    public function new_blocked(Request $request, LicencePlateService $licencePlateService, ActivitiesService $activitiesService,
+        MailerService $mailerService, UserService $userService):Response
     {
 
         $activity = new Activity();
@@ -130,11 +106,24 @@ class MainController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $activity->setStatus(0);
+            $initialLicencePlate = $activity->getBlockee();
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($activity);
-            $entityManager->flush();
+            $finalLicencePlate = preg_replace('/[^0-9a-zA-Z]/', '', $initialLicencePlate);
+
+            $activity->setBlockee(strtoupper($finalLicencePlate));
+
+            $activityByKey = $activitiesService->findByComposedId($activity->getBlocker(), $activity->getBlockee());
+
+            if ($activityByKey != null) {
+                $this->addFlash("notice", "activity already reported");
+            } else {
+
+                $this->searchForBlockee($licencePlateService, $mailerService, $userService, $activity);
+
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($activity);
+                $entityManager->flush();
+            }
 
             return $this->redirectToRoute('main');
         }
@@ -143,6 +132,44 @@ class MainController extends AbstractController
             'activity' => $activity,
             'form' => $form->createView(),
         ]);
+    }
+
+    private function searchForBlockee(LicencePlateService $licencePlateService, MailerService $mailerService,
+                                      UserService $userService, Activity $activity) {
+
+        $usersOfBlockedCar = $licencePlateService->findAllUsersByLicencePlate($activity->getBlockee());
+
+        if (sizeof($usersOfBlockedCar) != 0) {
+
+            foreach ($usersOfBlockedCar as $userId) {
+                $mailerService->sendRegistrationEmail($userService->getMailOfUser($userId),
+                    "you are blocked by " . $userService->getCurrentUserMail());
+            }
+            $activity->setStatus(1);
+        } else {
+            $this->addFlash("warning", "Can't find the user of car " . $activity->getBlockee());
+            $activity->setStatus(0);
+        }
+
+    }
+
+    private function searchForBlocker(LicencePlateService $licencePlateService, MailerService $mailerService,
+                                      UserService $userService, Activity $activity) {
+
+        $usersOfBlockerCar = $licencePlateService->findAllUsersByLicencePlate($activity->getBlocker());
+
+        if (sizeof($usersOfBlockerCar) != 0) {
+
+            foreach ($usersOfBlockerCar as $userId) {
+                $mailerService->sendRegistrationEmail($userService->getMailOfUser($userId),
+                    "come get car " . $activity->getBlocker());
+            }
+            $activity->setStatus(1);
+        } else {
+            $this->addFlash("warning", "Can't find the user of car " . $activity->getBlocker());
+            $activity->setStatus(0);
+        }
+
     }
 
 

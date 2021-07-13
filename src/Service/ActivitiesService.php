@@ -58,5 +58,22 @@ class ActivitiesService
         return $this->activityRepo->findOneByBlocker($licencePlate);
     }
 
+    public function findActionByBlockee(string $licencePlate): ?Activity
+    {
+        return $this->activityRepo->findOneByBlockee($licencePlate);
+    }
+
+    public function findByComposedId(string $blocker, string $blockee): ?Activity
+    {
+        return $this->activityRepo->createQueryBuilder('a')
+            ->andWhere('a.blocker = :blocker')
+            ->setParameter('blocker', $blocker)
+            ->andWhere('a.blockee = :blockee')
+            ->setParameter('blockee', $blockee)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
 
 }

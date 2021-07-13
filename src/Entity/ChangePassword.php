@@ -23,6 +23,8 @@ class ChangePassword
      *      minMessage = "Your first name must be at least {{ limit }} characters long",
      *      maxMessage = "Your first name cannot be longer than {{ limit }} characters"
      * )
+     * @Assert\Regex("/^(?=.*[a-zA-Z])(?=.*[0-9])/",
+     *      message="needs to contain both letters and numbers")
      */
     private $newPassword;
 
