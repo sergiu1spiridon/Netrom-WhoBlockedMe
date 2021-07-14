@@ -84,34 +84,47 @@ class LicencePlateController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'licence_plate_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, LicencePlate $licencePlate): Response
+    public function edit(Request $request, LicencePlate $licencePlate, ActivitiesService $activitiesService): Response
     {
-        $form = $this->createForm(LicencePlateType::class, $licencePlate);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+        if ($activitiesService->findActionByBlocker($licencePlate->getPlateNumber()) != null) {
+            $this->addFlash('notice', "there is an action with this car. Can't edit");
 
-            return $this->redirectToRoute('licence_plates_of_user');
+            return $this->show($licencePlate);
+        } else {
+            $form = $this->createForm(LicencePlateType::class, $licencePlate);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->getDoctrine()->getManager()->flush();
+
+                return $this->redirectToRoute('licence_plates_of_user');
+            }
+            return $this->render('licence_plate/edit.html.twig', [
+                'licence_plate' => $licencePlate,
+                'form' => $form->createView(),
+            ]);
         }
-
-        return $this->render('licence_plate/edit.html.twig', [
-            'licence_plate' => $licencePlate,
-            'form' => $form->createView(),
-        ]);
     }
 
     #[Route('/{id}', name: 'licence_plate_delete', methods: ['POST'])]
-    public function delete(Request $request, LicencePlate $licencePlate): Response
+    public function delete(Request $request, LicencePlate $licencePlate, ActivitiesService $activitiesService): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$licencePlate->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($licencePlate);
-            $entityManager->flush();
+        if ($activitiesService->findActionByBlocker($licencePlate->getPlateNumber()) != null) {
+            $this->addFlash('notice', "there is an action with this car. Can't edit");
 
-            $this->addFlash('success', "deleted car " . $licencePlate->getPlateNumber());
+            return $this->show($licencePlate);
+        } else {
+
+            if ($this->isCsrfTokenValid('delete' . $licencePlate->getId(), $request->request->get('_token'))) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($licencePlate);
+                $entityManager->flush();
+
+                $this->addFlash('success', "deleted car " . $licencePlate->getPlateNumber());
+            }
+
+            return $this->redirectToRoute('licence_plates_of_user');
         }
-
-        return $this->redirectToRoute('licence_plates_of_user');
     }
 }

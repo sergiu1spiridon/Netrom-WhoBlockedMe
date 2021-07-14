@@ -5,16 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8efc4229-4bf7-4417-936e-a68393fad2dc" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Netrom-WhoBlockedMe.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Netrom-WhoBlockedMe.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/MainController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/MainController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/ChangePassword.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/ChangePassword.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repository/ActivityRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/ActivityRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Service/ActivitiesService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/ActivitiesService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/security.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/security.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/LicencePlateController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/LicencePlateController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/ActivityType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/ActivityType.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/main_page.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/main_page.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/security/login.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/security/login.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/licence_plate/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/licence_plate/show.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -175,7 +171,8 @@
       <workItem from="1625584585506" duration="27176000" />
       <workItem from="1625812678943" duration="9435000" />
       <workItem from="1625926052809" duration="12167000" />
-      <workItem from="1626024086292" duration="21681000" />
+      <workItem from="1626024086292" duration="23016000" />
+      <workItem from="1626245068407" duration="3850000" />
     </task>
     <servers />
   </component>
