@@ -11,12 +11,25 @@ class ActivityBlockeeType extends ActivityType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('blockee', ChoiceType::class, ['choices' =>
-                $this->getChoices()
-            ])
-            ->add('blocker')
-        ;
+        if (sizeof($this->getChoices()) == 1) {
+            $licencePlate = $this->licencePlateService->findLicencePlatesByUserId()[0];
+            $builder
+                ->add('blockee',null, [
+                    'required'   => false,
+                    'empty_data' => $licencePlate,
+                    'attr' => array(
+                        'placeholder' => $licencePlate
+                    )
+                ])
+                ->add('blocker');
+        } else {
+            $builder
+                ->add('blockee', ChoiceType::class, ['choices' =>
+                    $this->getChoices()
+                ])
+                ->add('blocker')
+            ;
+        }
     }
 
 
