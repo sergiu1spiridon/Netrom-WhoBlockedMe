@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Main Page {% endblock %}
+
+{% block body %}
+    <div class="container">
+        <a class="btn btn-primary btn-lg btn-block" href={{ path('i_was_blocked') }}>someone blocked me</a>
+        <br><br>
+        <a class="btn btn-primary brn-lg btn-block" href={{ path('i_blocked') }}>i blocked someone</a>
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th> BLOCKEE </th>
+            <th> BLOCKER </th>
+            <th> STATUS </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for activity in blockedCars %}
+            <tr>
+                <td>{{ activity.blockee }}</td>
+                <td>{{ activity.blocker }}</td>
+                <td>{{ activity.status }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <br><br><br><br>
+    <table class="table">
+        <thead>
+        <tr>
+            <th> BLOCKEE </th>
+            <th> BLOCKER </th>
+            <th> STATUS </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for activity in blockedCarsTwo %}
+            <tr>
+                <td>{{ activity.blockee }}</td>
+                <td>{{ activity.blocker }}</td>
+                <td>{{ activity.status }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
