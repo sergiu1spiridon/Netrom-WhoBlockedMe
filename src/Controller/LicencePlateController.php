@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Activity;
 use App\Entity\LicencePlate;
 use App\Entity\User;
 use App\Form\LicencePlateType;
@@ -58,11 +59,17 @@ class LicencePlateController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', "added car " . $licencePlate->getPlateNumber());
-            $activityByBlocker = $activitiesService->findActionByBlocker($licencePlate->getPlateNumber());
+
+//            $activityByBlocker = $activitiesService->findActionByBlocker($licencePlate->getPlateNumber());
+            $activityByBlocker = $entityManager->getRepository(Activity::class)
+                ->findOneByBlocker($licencePlate->getPlateNumber());
 
             if ($activityByBlocker != null) {
-                $mailerService->sendRegistrationEmail($userService->getCurrentUserMail(), $activityByBlocker->getBlockee());
+                echo ("show " . $userService->getCurrentUserMail());
+                $mailerService->sendGetCarEmail($userService->getCurrentUserMail(), $activityByBlocker->getBlocker());
                 $activityByBlocker->setStatus(1);
+
+                $entityManager->flush();
                 $this->addFlash("warning", $licencePlate->getPlateNumber());
             }
 
@@ -92,10 +99,20 @@ class LicencePlateController extends AbstractController
 
             return $this->show($licencePlate);
         } else {
+
+            $oldLicencePlateNumber = $licencePlate->getPlateNumber();
+
             $form = $this->createForm(LicencePlateType::class, $licencePlate);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
+
+                $activity = $activitiesService->findActionByBlockee($oldLicencePlateNumber);
+
+                if ($activity != null) {
+                    $activity->setBlockee($licencePlate->getPlateNumber());
+                }
+
                 $this->getDoctrine()->getManager()->flush();
 
                 return $this->redirectToRoute('licence_plates_of_user');

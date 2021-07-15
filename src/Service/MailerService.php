@@ -6,6 +6,7 @@ namespace App\Service;
 
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Message;
 
 class MailerService
 {
@@ -30,9 +31,54 @@ class MailerService
             //->bcc('bcc@example.com')
             //->replyTo('fabien@example.com')
             //->priority(Email::PRIORITY_HIGH)
-            ->subject('Time for Symfony Mailer!')
-            ->text('Sending emails is fun again! ' . $password)
-            ->html('<p>See Twig integration for better HTML integration!</p>');
+            ->subject('Who Blocked Me Registration')
+            ->text($password)
+            ->html('your registration email is ' . $userMail . " and password " . $password);
+
+        $this->mailer->send($email);
+    }
+
+    public function sendGetCarEmail($userMail, $text) {
+        $email = (new Email())
+            ->from('hello@example.com')
+            ->to($userMail)
+            //->cc('cc@example.com')
+            //->bcc('bcc@example.com')
+            //->replyTo('fabien@example.com')
+            //->priority(Email::PRIORITY_HIGH)
+            ->subject('You have been reported to have blocked someone')
+            ->text($text)
+            ->html('Come get car ' . $text);
+
+        $this->mailer->send($email);
+    }
+
+    public function sendHaveBeenBlockedEmail($userMail, $text) {
+        $email = (new Email())
+            ->from('hello@example.com')
+            ->to($userMail)
+            //->cc('cc@example.com')
+            //->bcc('bcc@example.com')
+            //->replyTo('fabien@example.com')
+            //->priority(Email::PRIORITY_HIGH)
+            ->subject('You have been blocked by someone')
+            ->text($text)
+            ->html('You have been blocked by ' . $text);
+
+        $this->mailer->send($email);
+    }
+
+    public function sendActivityHasBeenDeletedMail($userMail, $text) {
+        $email = (new Email())
+            ->from('hello@example.com')
+            ->to($userMail)
+            //->cc('cc@example.com')
+            //->bcc('bcc@example.com')
+            //->replyTo('fabien@example.com')
+            //->priority(Email::PRIORITY_HIGH)
+            ->subject('Activity involving car ' . $text . 'has been deleted')
+            ->text($text)
+            ->html('there\'s no need to come for car ' . $text);
 
         $this->mailer->send($email);
     }

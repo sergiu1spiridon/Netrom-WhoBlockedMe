@@ -38,12 +38,6 @@ class UserSecurityController extends AbstractController
             $plainPassword = $user->getPassword();
             $password = $passwordEncoder->hashPassword($user, $user->getPassword());
             $user->setPassword($password);
-//            $user->setPassword(
-//                $passwordEncoder->encodePassword(
-//                    $user,
-//                    $form->get('password')->getData()
-//                )
-//            );
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);

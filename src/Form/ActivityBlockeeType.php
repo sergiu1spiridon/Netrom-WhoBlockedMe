@@ -5,6 +5,7 @@ namespace App\Form;
 
 
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class ActivityBlockeeType extends ActivityType
@@ -14,7 +15,7 @@ class ActivityBlockeeType extends ActivityType
         if (sizeof($this->getChoices()) == 1) {
             $licencePlate = $this->licencePlateService->findLicencePlatesByUserId()[0];
             $builder
-                ->add('blockee',null, [
+                ->add('blockee',TextType::class, [
                     'required'   => false,
                     'empty_data' => $licencePlate,
                     'attr' => array(

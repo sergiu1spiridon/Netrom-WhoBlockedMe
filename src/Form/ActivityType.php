@@ -8,13 +8,13 @@ use App\Entity\Activity;
 use App\Entity\LicencePlate;
 use App\Repository\LicencePlateRepository;
 use App\Service\LicencePlateService;
-use Doctrine\DBAL\Types\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\ChoiceList\ChoiceList;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -38,7 +38,7 @@ class ActivityType  extends AbstractType
         if (sizeof($this->getChoices()) == 1) {
             $licencePlate = $this->licencePlateService->findLicencePlatesByUserId()[0];
             $builder
-                ->add('blocker',null, [
+                ->add('blocker',TextType::class, [
                 'required'   => false,
                 'empty_data' => $licencePlate,
                 'attr' => array(

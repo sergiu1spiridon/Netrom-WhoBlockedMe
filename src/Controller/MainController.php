@@ -54,7 +54,7 @@ class MainController extends AbstractController
     }
 
     #[Route('/i_was_blocked', name: 'i_was_blocked', methods: ['GET', 'POST'])]
-    public function new_blockee(Request $request, ActivitiesService $activitiesService,
+    public function someoneBlockedMe(Request $request, ActivitiesService $activitiesService,
                                 LicencePlateService $licencePlateService,
                                 UserService $userService, MailerService $mailerService): Response
     {
@@ -92,7 +92,7 @@ class MainController extends AbstractController
     }
 
     #[Route('/i_blocked_someone', name: 'i_blocked', methods: ['GET', 'POST'])]
-    public function new_blocked(Request $request, LicencePlateService $licencePlateService, ActivitiesService $activitiesService,
+    public function iBlockedSomeone(Request $request, LicencePlateService $licencePlateService, ActivitiesService $activitiesService,
         MailerService $mailerService, UserService $userService):Response
     {
 
@@ -142,10 +142,10 @@ class MainController extends AbstractController
         if (sizeof($usersOfBlockedCar) != 0) {
 
             foreach ($usersOfBlockedCar as $userId) {
-                $mailerService->sendRegistrationEmail($userService->getMailOfUser($userId),
-                    "you are blocked by " . $userService->getCurrentUserMail());
+                $mailerService->sendHaveBeenBlockedEmail($userService->getMailOfUser($userId),
+                    $userService->getCurrentUserMail());
             }
-            $activity->setStatus(1);
+            $activity->setStatus(0);
         } else {
             $this->addFlash("warning", "Can't find the user of car " . $activity->getBlockee());
             $activity->setStatus(0);
@@ -161,8 +161,8 @@ class MainController extends AbstractController
         if (sizeof($usersOfBlockerCar) != 0) {
 
             foreach ($usersOfBlockerCar as $userId) {
-                $mailerService->sendRegistrationEmail($userService->getMailOfUser($userId),
-                    "come get car " . $activity->getBlocker());
+                $mailerService->sendGetCarEmail($userService->getMailOfUser($userId),
+                   $activity->getBlocker());
             }
             $activity->setStatus(1);
         } else {
@@ -170,6 +170,50 @@ class MainController extends AbstractController
             $activity->setStatus(0);
         }
 
+    }
+
+    #[Route('/{blocker}/{blockee}', name: 'call_driver' , methods: ['POST'])]
+    public function callForUserOfCar(string $blocker, string $blockee, MailerService $mailerService,
+                                     LicencePlateService $licencePlateService, UserService $userService,
+                                     ActivitiesService $activitiesService): Response
+    {
+
+        $activity = $activitiesService->findByComposedId($blocker, $blockee);
+
+        if ($activity != null && $activity->getStatus() == 0) {
+            $this->searchForBlocker($licencePlateService, $mailerService, $userService, $activity);
+            $this->getDoctrine()->getManager()->flush();
+        }
+
+        return $this->redirectToRoute('main');
+    }
+
+    #[Route('/{blocker}/{blockee}', name: 'activity_delete', methods: ['POST'])]
+    public function deleteActivity(Request $request,$blocker, $blockee, ActivitiesService $activitiesService,
+                                   MailerService $mailerService, LicencePlateService $licencePlateService,
+                                    UserService $userService):Response
+    {
+        $activity = $activitiesService->findByComposedId($blocker, $blockee);
+
+        if ($this->isCsrfTokenValid('delete' . $activity->getBlocker() . $activity->getBlockee(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($activity);
+//            $activitiesService->deleteActivity($activity);
+            $entityManager->flush();
+
+            $usersOfBlockerCar = $licencePlateService->findAllUsersByLicencePlate($activity->getBlocker());
+
+            if (sizeof($usersOfBlockerCar) != 0) {
+
+                foreach ($usersOfBlockerCar as $userId) {
+                    $mailerService->sendActivityHasBeenDeletedMail($userService->getMailOfUser($userId),
+                        $activity->getBlocker());
+                }
+
+            }
+        }
+
+        return $this->redirectToRoute('main');
     }
 
 

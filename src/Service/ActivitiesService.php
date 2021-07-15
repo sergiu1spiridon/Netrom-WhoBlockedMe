@@ -63,6 +63,9 @@ class ActivitiesService
         return $this->activityRepo->findOneByBlockee($licencePlate);
     }
 
+    /**
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function findByComposedId(string $blocker, string $blockee): ?Activity
     {
         return $this->activityRepo->createQueryBuilder('a')
@@ -73,6 +76,19 @@ class ActivitiesService
             ->getQuery()
             ->getOneOrNullResult()
             ;
+    }
+
+    public function deleteActivity(Activity $activity)
+    {
+        return $this->activityRepo
+            ->createQueryBuilder()
+            ->delete('Activity', 'da')
+            ->andWhere('da.blocker = :blocker')
+            ->setParameter('blocker', $activity->getBlocker())
+            ->andWhere('da.blockee = :blockee')
+            ->setParameter('blockee', $activity->getBlockee())
+            ->getQuery()
+            ->execute();
     }
 
 

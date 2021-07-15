@@ -46,6 +46,13 @@
                 <td>{{ activity.blockee }}</td>
                 <td>{{ activity.blocker }}</td>
                 <td>{{ activity.status }}</td>
+                <td>{{ include('activity/_activity_delete_form.html.twig') }}</td>
+                <td>
+                    <form method="post" action="{{ path('call_driver', {'blocker' : activity.blocker, 'blockee' : activity.blockee}) }}">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ activity.blocker ~ activity.blockee) }}">
+                        <button class="btn">summon your blocker</button>
+                    </form>
+                </td>
             </tr>
         {% else %}
             <tr>
