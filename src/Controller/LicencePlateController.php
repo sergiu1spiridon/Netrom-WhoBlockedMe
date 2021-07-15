@@ -65,12 +65,12 @@ class LicencePlateController extends AbstractController
                 ->findOneByBlocker($licencePlate->getPlateNumber());
 
             if ($activityByBlocker != null) {
-                echo ("show " . $userService->getCurrentUserMail());
+//                echo ("show " . $userService->getCurrentUserMail());
                 $mailerService->sendGetCarEmail($userService->getCurrentUserMail(), $activityByBlocker->getBlocker());
                 $activityByBlocker->setStatus(1);
 
                 $entityManager->flush();
-                $this->addFlash("warning", $licencePlate->getPlateNumber());
+                $this->addFlash("warning", $licencePlate->getPlateNumber() . 'is blocking someone');
             }
 
             return $this->redirectToRoute('licence_plates_of_user');

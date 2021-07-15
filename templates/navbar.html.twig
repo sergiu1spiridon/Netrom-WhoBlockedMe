@@ -15,7 +15,7 @@
 <body>
 
 <!-- navbar -->
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
     <a class="navbar-brand" href="/"></a>
     <!-- left side -->
     <ul class="navbar-nav mr-auto">
@@ -32,7 +32,10 @@
     <ul class="navbar-nav ml-auto">
         {% if (route_name != "app_login") and (route_name != "app_register") %}
             <li {% if route_name != "app_logout" %} class="nav-item active" {% else %} class="nav-item" {% endif %} >
-                <a class="nav-link" href="{{ path('app_logout') }}" onclick="return confirm('are u sure?')">Logout</a>
+{#                <a class="nav-link" href="{{ path('app_logout') }}" onclick="return confirm('are u sure?')">Logout</a>#}
+                <form method="get" action="{{ path('app_logout') }}" onsubmit="return confirm('are u sure?');">
+                    <button class="btn nav-link">Logout</button>
+                </form>
             </li>
         {% else %}
             <li {% if route_name != "app_login" %} class="nav-item active" {% else %} class="nav-item" {% endif %} >

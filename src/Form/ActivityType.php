@@ -42,6 +42,7 @@ class ActivityType  extends AbstractType
                 'required'   => false,
                 'empty_data' => $licencePlate,
                 'attr' => array(
+                    'readonly' => true,
                     'placeholder' => $licencePlate
                 )
                 ])

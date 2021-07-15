@@ -172,10 +172,10 @@ class MainController extends AbstractController
 
     }
 
-    #[Route('/{blocker}/{blockee}', name: 'call_driver' , methods: ['POST'])]
+    #[Route('/{blocker}/{blockee}/{id}', name: 'call_driver' , methods: ['GET'])]
     public function callForUserOfCar(string $blocker, string $blockee, MailerService $mailerService,
                                      LicencePlateService $licencePlateService, UserService $userService,
-                                     ActivitiesService $activitiesService): Response
+                                     ActivitiesService $activitiesService)
     {
 
         $activity = $activitiesService->findByComposedId($blocker, $blockee);
