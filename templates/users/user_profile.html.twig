@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block body %}
+<br><br><br>
+<h1>User Profile</h1>
+
+<div style="text-align: center">
+    <img src="{{ asset('images/'~ user.profilePicture ) }}" class="img-thumbnail w-25" alt="profile pic"/>
+</div>
+<table class="table">
+    <tbody>
+    <tr>
+        <th>Id</th>
+        <td>{{ user.id }}</td>
+    </tr>
+    <tr>
+        <th>EMAIL ADDRESS</th>
+        <td>{{ user.emailAddress }}</td>
+    </tr>
+    <tr>
+        <th>SCORE</th>
+        <td>{{ user.rating }} / 5</td>
+    </tr>
+    </tbody>
+</table>
+
+    <br><br><br>
+{% endblock %}

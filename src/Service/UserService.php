@@ -38,5 +38,10 @@ class UserService
         return $this->userRepository->find($userId)->getEmailAddress();
     }
 
+    public function getUserById($userId):?User
+    {
+        return $this->userRepository->find($userId);
+    }
+
 
 }

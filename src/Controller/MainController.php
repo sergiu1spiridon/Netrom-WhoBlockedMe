@@ -3,12 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Activity;
+use App\Entity\Rating;
 use App\Form\ActivityBlockeeType;
 use App\Form\ActivityType;
+use App\Form\ReviewType;
 use App\Repository\UserRepository;
 use App\Service\LicencePlateService;
 use App\Service\ActivitiesService;
 use App\Service\MailerService;
+use App\Service\RatingService;
 use App\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -172,7 +175,7 @@ class MainController extends AbstractController
 
     }
 
-    #[Route('/{blocker}/{blockee}/{id}', name: 'call_driver' , methods: ['GET'])]
+    #[Route('call_driver/{blocker}/{blockee}/{id}', name: 'call_driver' , methods: ['GET'])]
     public function callForUserOfCar(string $blocker, string $blockee, MailerService $mailerService,
                                      LicencePlateService $licencePlateService, UserService $userService,
                                      ActivitiesService $activitiesService)
@@ -188,7 +191,7 @@ class MainController extends AbstractController
         return $this->redirectToRoute('main');
     }
 
-    #[Route('/{blocker}/{blockee}', name: 'activity_delete', methods: ['POST'])]
+    #[Route('delete_activity/{blocker}/{blockee}', name: 'activity_delete', methods: ['POST'])]
     public function deleteActivity(Request $request,$blocker, $blockee, ActivitiesService $activitiesService,
                                    MailerService $mailerService, LicencePlateService $licencePlateService,
                                     UserService $userService):Response
@@ -213,7 +216,69 @@ class MainController extends AbstractController
             }
         }
 
-        return $this->redirectToRoute('main');
+//        return $this->redirectToRoute('main');
+        return $this->redirectToRoute('rate_car', array('blocker' => $blocker));
+    }
+
+    #[Route('add_rating/{blocker}/', name: 'rate_car', methods: ['GET', 'POST'])]
+    public function addRating(Request $request, $blocker, LicencePlateService $licencePlateService, RatingService $ratingService,
+    UserService $userService)
+    {
+        $rating = new Rating();
+        $user = $this->getUser()->getUserIdentifier();
+
+        $form = $this->createForm(ReviewType::class, $rating);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $usersOfBlockerCar = $licencePlateService->findAllUsersByLicencePlate($blocker);
+
+            if (sizeof($usersOfBlockerCar) != 0) {
+
+                foreach ($usersOfBlockerCar as $userId) {
+                    $ratedUser = $userService->getUserById($userId);
+                    $newRating = $ratingService->findByRatedAndRater($userId, $user);
+
+                    if ($newRating == null) {
+                        $ratedUser->setRating((($ratedUser->getRating() * $ratedUser->getNumberOfRatings()) +
+                                $rating->getRating()) / ($ratedUser->getNumberOfRatings() + 1));
+
+                        $ratedUser->setNumberOfRatings($ratedUser->getNumberOfRatings() + 1);
+
+                        $newRating = new Rating();
+                    } else {
+                        $newScore = $ratedUser->getRating() * $ratedUser->getNumberOfRatings();
+
+                        $newScore -= $newRating->getRating();
+
+                        $newScore += $rating->getRating();
+
+                        $newScore /= $ratedUser->getNumberOfRatings();
+
+                        $ratedUser->setRating($newScore);
+                    }
+
+                    $newRating->setRating($rating->getRating());
+                    $newRating->setRatedId($userId);
+                    $newRating->setRaterId($user);
+                    $newRating->setDate(0);
+
+                    $entityManager = $this->getDoctrine()->getManager();
+                    $entityManager->persist($ratedUser);
+                    $entityManager->persist($newRating);
+                    $entityManager->flush();
+                }
+            } else {
+                $this->addFlash("warning", "Can't find the user of car " . $blocker);
+            }
+            return $this->redirectToRoute('main');
+        }
+
+        return $this->render('activity/rating_form.html.twig', [
+            'rating' => $rating,
+            'form' => $form->createView(),
+        ]);
     }
 
 

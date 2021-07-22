@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block body %}
+    <br><br><br>
+    <h1>User Profile</h1>
+
+    <div style="text-align: center">
+    <img src="{{ asset('images/'~ user.profilePicture ) }}" class="img-thumbnail w-25" alt="profile pic"/>
+    </div>
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>Id</th>
+            <td>{{ user.id }}</td>
+        </tr>
+        <tr>
+            <th>EMAIL ADDRESS</th>
+            <td>{{ user.emailAddress }}</td>
+        </tr>
+        <tr>
+            <th>SCORE</th>
+            <td>{{ user.rating }} / 5</td>
+        </tr>
+        </tbody>
+    </table>
+    <div style="padding: 20px">
+    <a class="btn btn-secondary" href="{{ path('app_change_password') }}">Change password</a>
+    </div>
+    <div>
+    <form method="post" enctype="multipart/form-data" action="{{ path('change_profile_pic') }}"
+          onsubmit="return confirm('Are you sure you want to change this item?');">
+        <!-- MAX_FILE_SIZE must precede the file input field -->
+        <input type="hidden" name="MAX_FILE_SIZE" value="8000000" />
+        <!-- Name of input element determines name in $_FILES array -->
+        Upload new picture: <input name="file" type="file" />
+        <input type="submit" value='upload' />
+    </form>
+    </div>
+    <br><br><br><br>
+{% endblock %}

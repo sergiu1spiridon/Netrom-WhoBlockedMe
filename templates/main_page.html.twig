@@ -58,8 +58,13 @@
                 <td>{{ include('activity/_activity_delete_form.html.twig') }}</td>
                 <td>
                     <form method="get" action="{{ path('call_driver', {'blocker' : activity.blocker, 'blockee' : activity.blockee, 'id' : 0}) }}">
-                        <button class="btn">contact your blocker</button>
+                        <button class="btn btn-info">contact your blocker</button>
                     </form>
+                </td>
+                <td>
+                    <a href="{{ path('other_profile',{'id' : activity.blocker}) }}" class="btn btn-info">
+                        see profile
+                    </a>
                 </td>
             </tr>
         {% else %}
@@ -69,5 +74,6 @@
         {% endfor %}
         </tbody>
     </table>
+    <br><br><br><br>
 {% endblock %}
 

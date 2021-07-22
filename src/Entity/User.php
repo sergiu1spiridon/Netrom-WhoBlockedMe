@@ -42,6 +42,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $roles = [];
 
+    /**
+     * @var string Link to picture
+     * @ORM\Column(type="string" )
+     */
+    private $profilePicture = "basic-img.png";
+
+    /**
+     * @var float
+     * @ORM\Column(type="float")
+     */
+    private $rating = 0;
+
+    /**
+     * @var int
+     * @ORM\Column (type="integer")
+     */
+    private $numberOfRatings = 0;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -92,6 +110,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUsername()
     {
         // TODO: Implement getUsername() method.
+        return $this->emailAddress;
     }
 
     public function __call(string $name, array $arguments)
@@ -129,4 +148,64 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return (string) $this->id;
     }
+
+    /**
+     * @return string
+     */
+    public function getProfilePicture(): string
+    {
+        return $this->profilePicture;
+    }
+
+    /**
+     * @return float
+     */
+    public function getRating(): float|int
+    {
+        return $this->rating;
+    }
+
+    /**
+     * @param float $rating
+     * @return User
+     */
+    public function setRating(float|int $rating): User
+    {
+        $this->rating = $rating;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumberOfRatings(): int
+    {
+        return $this->numberOfRatings;
+    }
+
+    /**
+     * @param int $numberOfRatings
+     * @return User
+     */
+    public function setNumberOfRatings(int $numberOfRatings): User
+    {
+        $this->numberOfRatings = $numberOfRatings;
+        return $this;
+    }
+
+    /**
+     * @param string $profilePicture
+     * @return User
+     */
+    public function setProfilePicture(string $profilePicture): User
+    {
+        $this->profilePicture = $profilePicture;
+        return $this;
+    }
+
+
+
+
+
+
 }

@@ -7,7 +7,9 @@ use App\Entity\User;
 use App\Form\NewPasswordType;
 use App\Form\UserRegisterFormType;
 use App\Repository\UserRepository;
+use App\Service\LicencePlateService;
 use App\Service\MailerService;
+use App\Service\UserService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -53,6 +55,38 @@ class UserSecurityController extends AbstractController
         ]);
     }
 
+    #[Route('/change_profile_picture', name: 'change_profile_pic', methods: ['POST'])]
+    public function changeProfilePic(Request $request):Response
+    {
+//        dd($_FILES);
+        $info = pathinfo($_FILES['file']['name']);
+        $ext = $info['extension']; // get the extension of the file
+        $newname = $this->getUser()->getUserIdentifier().".".$ext;
+
+        $target = 'images/'.$newname;
+
+        $result = move_uploaded_file( $_FILES['file']['tmp_name'], $target);
+//        copy($_FILES['file']['tmp_name'], $target);
+        if ($result) {
+            $this->addFlash('message', 'uploaded');
+        } else {
+            dd($_FILES);
+        }
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+//        $user = $entityManager->getRepository(User::class)->find($this->getUser()->getUserIdentifier());
+
+        $user = $this->getUser();
+        $user->setProfilePicture($newname);
+
+        $entityManager->flush();
+
+//        $this->addFlash('message', $target);
+
+        return $this->redirectToRoute('profile');
+    }
+
     #[Route('/ch_pass', name: 'app_change_password', methods: ['GET', 'POST'])]
     public function changePassword(Request $request, UserPasswordHasherInterface $passwordEncoder, MailerService $mailerService):Response
     {
@@ -88,6 +122,37 @@ class UserSecurityController extends AbstractController
             'form' => $form->createView(),
         ]);
 
+    }
+
+    #[Route('/other_user_profile/{id}', name: 'other_profile', methods: ['GET'])]
+    public function userProfile($id, UserService $userService, LicencePlateService $licencePlateService):Response
+    {
+        $usersOfCar = $licencePlateService->findAllUsersByLicencePlate($id);
+        if (sizeof($usersOfCar) > 0) {
+            $user = $userService->getUserById($usersOfCar[0]);
+            for ($i = 1; $i < sizeof($usersOfCar); $i++) {
+                if ($userService->getUserById($usersOfCar[$i])->setNumberOfRatings() > $user->getNumberOfRatings()) {
+                    $user = $userService->getUserById($usersOfCar[$i]);
+                }
+            }
+
+            return $this->render('users/user_profile.html.twig', [
+                'user' => $user
+            ]);
+        } else {
+            dd(sizeof($usersOfCar));
+            return $this->redirectToRoute('main');
+        }
+    }
+
+    #[Route('/user_profile', name: 'profile', methods: ['GET', 'POST'])]
+    public function profile(Request $request):Response
+    {
+        $user = ($this->getUser());
+
+        return $this->render('users/profile.html.twig', [
+            'user' => $user
+        ]);
     }
 
     /**
